@@ -139,4 +139,28 @@ public class Product {
     return expirationDate;
   }
 
+  public void copyFromAnother(Product another) {
+    if (another.getID() != null) {
+      this.ID = another.getID();
+    }
+    if (another.getName() != null) {
+      this.name = another.getName();
+    }
+    if (another.getManufacturer() != null) {
+      this.manufacturer = another.getManufacturer();
+    }
+    if (another.getDescription() != null) {
+      this.description = another.getDescription();
+    }
+    if (another.getPrice() != null) {
+      this.price = another.getPrice();
+    }
+    if (another.getQuantityInStock() > 0) {
+      this.quantityInStock = another.getQuantityInStock();
+    }
+    if (another.getExpirationDate() != null) {
+      this.expirationDate = another.getExpirationDate();
+    }
+  }
+
 }

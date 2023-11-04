@@ -5,7 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -62,6 +64,21 @@ public class ProductController {
     product = productService.update(productId, product);
     ProductWithIdDTO productOutputDTO = productAssembler.toOutput(product);
     return ResponseEntity.ok(productOutputDTO);
+  }
+
+  @PatchMapping("/{productID}")
+  public ResponseEntity<ProductWithIdDTO> partialUpdate(
+      @PathVariable final Long productID,
+      @RequestBody ProductDTO productDTO) {
+    Product product = productAssembler.toEntity(productDTO);
+    product = productService.partialUpdate(productID, product);
+    return new ResponseEntity<ProductWithIdDTO>(productAssembler.toOutput(product), HttpStatus.OK);
+  }
+
+  @DeleteMapping("/{productId}")
+  public ResponseEntity<?> delete(@PathVariable final Long productId) {
+    productService.delete(productId);
+    return ResponseEntity.noContent().build();
   }
 
 }

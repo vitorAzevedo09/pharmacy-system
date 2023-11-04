@@ -43,4 +43,17 @@ public class ProductService {
     return productRepository.save(newProduct);
   }
 
+  @Transactional
+  public Product partialUpdate(final Long id, final Product productNew) {
+    Product productDB = findOrFail(id);
+    productDB.copyFromAnother(productNew);
+    return productRepository.save(productDB);
+  }
+
+  @Transactional
+  public void delete(final Long productID) {
+    Product entity = findOrFail(productID);
+    productRepository.delete(entity);
+  }
+
 }
