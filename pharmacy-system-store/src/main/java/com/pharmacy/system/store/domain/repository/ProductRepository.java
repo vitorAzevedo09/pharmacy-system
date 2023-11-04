@@ -10,5 +10,4 @@ import com.pharmacy.system.store.domain.model.Product;
  */
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-
 }

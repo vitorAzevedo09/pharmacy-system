@@ -93,6 +93,7 @@ public class Product {
     }
 
     public Builder expirationDate(Date expirationDate) {
+      this.expirationDate = expirationDate;
       return this;
     }
 
@@ -104,6 +105,10 @@ public class Product {
 
   public static Builder builder() {
     return new Builder();
+  }
+
+  public void setID(Long id) {
+    this.ID = id;
   }
 
   public Long getID() {
