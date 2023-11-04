@@ -46,7 +46,7 @@ public class ProductService {
   @Transactional
   public Product partialUpdate(final Long id, final Product productNew) {
     Product productDB = findOrFail(id);
-    productDB.copyFromAnother(productNew);
+    productDB.copyFrom(productNew);
     return productRepository.save(productDB);
   }
 

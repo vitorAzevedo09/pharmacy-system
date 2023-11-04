@@ -33,7 +33,7 @@ public class Product {
   private BigDecimal price;
 
   @Column(name = "quantity_in_stock")
-  private int quantityInStock;
+  private Integer quantityInStock;
 
   @Column(name = "expiration_date")
   @Temporal(TemporalType.DATE)
@@ -131,7 +131,7 @@ public class Product {
     return price;
   }
 
-  public int getQuantityInStock() {
+  public Integer getQuantityInStock() {
     return quantityInStock;
   }
 
@@ -139,7 +139,7 @@ public class Product {
     return expirationDate;
   }
 
-  public void copyFromAnother(Product another) {
+  public void copyFrom(Product another) {
     if (another.getID() != null) {
       this.ID = another.getID();
     }
@@ -155,7 +155,7 @@ public class Product {
     if (another.getPrice() != null) {
       this.price = another.getPrice();
     }
-    if (another.getQuantityInStock() > 0) {
+    if (another.getQuantityInStock() != null) {
       this.quantityInStock = another.getQuantityInStock();
     }
     if (another.getExpirationDate() != null) {
