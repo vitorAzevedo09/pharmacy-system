@@ -2,12 +2,11 @@
 
 ## Use cases
 
-[ ] CRUD products
+[ ] Show all products in stock
 
-[ ] CRUD customers
+[ ] Create a product in stock
+    [ ] Its not possible a negative number in products's quantity
 
-[ ] CRUD Order
+[ ] Show a specific product in stock
 
-[ ] Sell Product
-
-[ ] Only user admin
+[ ] Create a customer

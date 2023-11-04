@@ -1,4 +1,4 @@
-package com.pharmacy.system.store.pharmacysystemstore;
+package com.pharmacy.system.store;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
