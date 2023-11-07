@@ -75,7 +75,15 @@ public class Order {
         .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 
-  public void setConfirmation() {
+  public void confirm() {
+    if (getStatus() != OrderStatus.CREATED) {
+      throw new OrderFlowException(getStatus(), OrderStatus.CONFIRMED);
+    }
+    setStatus(OrderStatus.CONFIRMED);
+    setConfirmationDate(OffsetDateTime.now());
+  }
+
+  public void delivery() {
     if (getStatus() != OrderStatus.CREATED) {
       throw new OrderFlowException(getStatus(), OrderStatus.CONFIRMED);
     }
@@ -133,6 +141,22 @@ public class Order {
 
   public OffsetDateTime getDeliveryDate() {
     return deliveryDate;
+  }
+
+  public void setCustomer(Customer customer) {
+    this.customer = customer;
+  }
+
+  public void setOrderDate(Date orderDate) {
+    this.orderDate = orderDate;
+  }
+
+  public void setTotalAmount(BigDecimal totalAmount) {
+    this.totalAmount = totalAmount;
+  }
+
+  public void setItems(Set<OrderItem> items) {
+    this.items = items;
   }
 
 }

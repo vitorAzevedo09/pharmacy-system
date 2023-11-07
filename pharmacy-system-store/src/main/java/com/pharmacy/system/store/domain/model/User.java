@@ -1,9 +1,19 @@
 package com.pharmacy.system.store.domain.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 /**
  * User
  */
-public abstract class User {
+@Entity(name = "users")
+public class User {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long ID;
   private String username;
   private String password;
 

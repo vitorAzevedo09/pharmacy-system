@@ -30,7 +30,7 @@ public class OrderItem {
   private Product product;
 
   @Column(name = "quantity")
-  private int quantity;
+  private Integer quantity;
 
   @Column(name = "price_per_unit")
   private BigDecimal pricePerUnit;
@@ -53,6 +53,26 @@ public class OrderItem {
 
   public BigDecimal getPricePerUnit() {
     return pricePerUnit;
+  }
+
+  public void setOrderItemID(Long orderItemID) {
+    this.orderItemID = orderItemID;
+  }
+
+  public void setOrder(Order order) {
+    this.order = order;
+  }
+
+  public void setProduct(Product product) {
+    this.product = product;
+  }
+
+  public void setQuantity(Integer quantity) {
+    this.quantity = quantity;
+  }
+
+  public void setPricePerUnit(BigDecimal pricePerUnit) {
+    this.pricePerUnit = pricePerUnit;
   }
 
 }
