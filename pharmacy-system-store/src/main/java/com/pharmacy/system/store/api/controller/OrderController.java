@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.pharmacy.system.store.api.dto.OrderDTO;
 import com.pharmacy.system.store.api.dto.OrderWithIdDTO;
@@ -49,8 +50,13 @@ public class OrderController {
   public ResponseEntity<OrderWithIdDTO> create(
       @RequestBody OrderDTO orderInput) {
     Order order = orderAssembler.toEntity(orderInput);
-    OrderWithIdDTO orderOutput = orderAssembler.toOutput(orderService.create(order));
-    return new ResponseEntity<OrderWithIdDTO>(orderOutput, HttpStatus.OK);
+    try {
+      Order orderOut = orderService.create(order);
+      OrderWithIdDTO orderOutDTO = orderAssembler.toOutput(orderOut);
+      return new ResponseEntity<OrderWithIdDTO>(orderOutDTO, HttpStatus.OK);
+    } catch (Exception ex) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
+    }
   }
 
 }

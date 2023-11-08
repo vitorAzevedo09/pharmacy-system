@@ -5,8 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.pharmacy.system.store.domain.exception.OrderItemNotFoundException;
 import com.pharmacy.system.store.domain.exception.OrderNotFoundException;
 import com.pharmacy.system.store.domain.model.Order;
+import com.pharmacy.system.store.domain.model.OrderItem;
+import com.pharmacy.system.store.domain.repository.OrderItemRepository;
 import com.pharmacy.system.store.domain.repository.OrderRepository;
 
 import jakarta.transaction.Transactional;
@@ -20,6 +23,9 @@ public class OrderService {
   @Autowired
   private OrderRepository orderRepository;
 
+  @Autowired
+  private OrderItemRepository orderItemRepository;
+
   public Page<Order> findAll(Pageable pageable) {
     return orderRepository.findAll(pageable);
   }
@@ -27,6 +33,11 @@ public class OrderService {
   public Order findOrFail(final Long orderID) {
     return orderRepository.findById(orderID)
         .orElseThrow(() -> new OrderNotFoundException(orderID));
+  }
+
+  public OrderItem findOrFailItem(final Long orderItemID) {
+    return orderItemRepository.findById(orderItemID)
+        .orElseThrow(() -> new OrderItemNotFoundException(orderItemID));
   }
 
   @Transactional

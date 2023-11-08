@@ -7,9 +7,11 @@ import org.springframework.stereotype.Component;
 
 import com.pharmacy.system.store.api.dto.OrderWithIdDTO;
 import com.pharmacy.system.store.api.dto.OrderDTO;
+import com.pharmacy.system.store.api.dto.OrderItemOnlyIdDTO;
 import com.pharmacy.system.store.api.dto.OrderItemWithIdDTO;
 import com.pharmacy.system.store.domain.model.Order;
 import com.pharmacy.system.store.domain.model.OrderItem;
+import com.pharmacy.system.store.domain.service.OrderService;
 
 /**
  * OrderAssembler
@@ -18,7 +20,7 @@ import com.pharmacy.system.store.domain.model.OrderItem;
 public class OrderAssembler {
 
     @Autowired
-    ProductAssembler pAssembler;
+    private OrderService orderService;
 
     public OrderWithIdDTO toOutput(Order entity) {
         return new OrderWithIdDTO(
@@ -39,7 +41,6 @@ public class OrderAssembler {
     public OrderItemWithIdDTO toOutput(OrderItem entity) {
         return new OrderItemWithIdDTO(
                 entity.getOrderItemID(),
-                toOutput(entity.getOrder()),
                 entity.getQuantity(),
                 entity.getPricePerUnit());
     }
@@ -54,17 +55,11 @@ public class OrderAssembler {
 
     public Order toEntity(OrderDTO dto) {
         Order entity = new Order();
-        // entity.setCustomer(dto.customer());
         entity.setOrderDate(dto.orderDate());
-        entity.setTotalAmount(dto.totalAmount());
-        // entity.setStatus(dto.status());
         entity.setItems(dto.items()
                 .stream()
                 .map(oi -> toEntity(oi))
                 .collect(Collectors.toSet()));
-        entity.setConfirmationDate(dto.confirmationDate());
-        entity.setCancellationDate(dto.cancellationDate());
-        entity.setDeliveryDate(dto.deliveryDate());
         return entity;
     }
 
@@ -83,6 +78,10 @@ public class OrderAssembler {
         entity.setCancellationDate(dto.cancellationDate());
         entity.setDeliveryDate(dto.deliveryDate());
         return entity;
+    }
+
+    public OrderItem toEntity(OrderItemOnlyIdDTO dto) {
+        return orderService.findOrFailItem(dto.ID());
     }
 
 }
