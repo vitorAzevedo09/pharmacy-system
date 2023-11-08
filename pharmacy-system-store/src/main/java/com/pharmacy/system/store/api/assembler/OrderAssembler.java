@@ -7,20 +7,19 @@ import org.springframework.stereotype.Component;
 
 import com.pharmacy.system.store.api.dto.OrderWithIdDTO;
 import com.pharmacy.system.store.api.dto.OrderDTO;
-import com.pharmacy.system.store.api.dto.OrderItemOnlyIdDTO;
+import com.pharmacy.system.store.api.dto.OrderItemDTO;
 import com.pharmacy.system.store.api.dto.OrderItemWithIdDTO;
 import com.pharmacy.system.store.domain.model.Order;
 import com.pharmacy.system.store.domain.model.OrderItem;
-import com.pharmacy.system.store.domain.service.OrderService;
+import com.pharmacy.system.store.domain.service.ProductService;
 
 /**
  * OrderAssembler
  */
 @Component
 public class OrderAssembler {
-
     @Autowired
-    private OrderService orderService;
+    private ProductService productService;
 
     public OrderWithIdDTO toOutput(Order entity) {
         return new OrderWithIdDTO(
@@ -55,7 +54,7 @@ public class OrderAssembler {
 
     public Order toEntity(OrderDTO dto) {
         Order entity = new Order();
-        entity.setOrderDate(dto.orderDate());
+        entity.setOrderDate(dto.orderDateTime());
         entity.setItems(dto.items()
                 .stream()
                 .map(oi -> toEntity(oi))
@@ -80,8 +79,13 @@ public class OrderAssembler {
         return entity;
     }
 
-    public OrderItem toEntity(OrderItemOnlyIdDTO dto) {
-        return orderService.findOrFailItem(dto.ID());
+    public OrderItem toEntity(OrderItemDTO dto) {
+        OrderItem entity = new OrderItem();
+        System.out.println(dto.product_id());
+        entity.setProduct(productService.findOrFail(dto.product_id()));
+        entity.setQuantity(dto.quantity());
+        entity.setPricePerUnit(dto.price_unit());
+        return entity;
     }
 
 }

@@ -16,6 +16,7 @@ import jakarta.persistence.ManyToOne;
 
 @Entity(name = "order_items")
 public class OrderItem {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "order_item_id")

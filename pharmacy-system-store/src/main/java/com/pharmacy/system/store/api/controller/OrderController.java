@@ -49,8 +49,8 @@ public class OrderController {
   @PostMapping
   public ResponseEntity<OrderWithIdDTO> create(
       @RequestBody OrderDTO orderInput) {
-    Order order = orderAssembler.toEntity(orderInput);
     try {
+      Order order = orderAssembler.toEntity(orderInput);
       Order orderOut = orderService.create(order);
       OrderWithIdDTO orderOutDTO = orderAssembler.toOutput(orderOut);
       return new ResponseEntity<OrderWithIdDTO>(orderOutDTO, HttpStatus.OK);

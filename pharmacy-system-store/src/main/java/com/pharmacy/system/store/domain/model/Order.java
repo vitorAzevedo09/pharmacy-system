@@ -7,7 +7,6 @@ import java.time.OffsetDateTime;
  * Order
  */
 
-import java.util.Date;
 import java.util.Set;
 
 import com.pharmacy.system.store.domain.exception.OrderFlowException;
@@ -24,8 +23,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity(name = "orders")
 public class Order {
@@ -40,8 +37,7 @@ public class Order {
   private Customer customer;
 
   @Column(name = "order_date")
-  @Temporal(TemporalType.DATE)
-  private Date orderDate;
+  private OffsetDateTime orderDate;
 
   @Column(name = "TotalAmount")
   private BigDecimal totalAmount;
@@ -115,7 +111,7 @@ public class Order {
     return customer;
   }
 
-  public Date getOrderDate() {
+  public OffsetDateTime getOrderDate() {
     return orderDate;
   }
 
@@ -147,7 +143,7 @@ public class Order {
     this.customer = customer;
   }
 
-  public void setOrderDate(Date orderDate) {
+  public void setOrderDate(OffsetDateTime orderDate) {
     this.orderDate = orderDate;
   }
 

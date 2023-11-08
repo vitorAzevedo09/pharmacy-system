@@ -10,7 +10,7 @@ public class OrderItemNotFoundException extends ResourceNotFoundException {
   }
 
   public OrderItemNotFoundException(Long id) {
-    super(String.format("Product with id %d not found in system", id));
+    super(String.format("Item with id %d not found in system", id));
   }
 
 }
