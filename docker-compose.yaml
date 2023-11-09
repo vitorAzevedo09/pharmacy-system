@@ -9,9 +9,13 @@ services:
       - "8080:8080"
     volumes:
       - ./target:/app
-      - ./.env:/app/.env
-
-  postgres:
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+  db:
     image: postgres:latest
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
