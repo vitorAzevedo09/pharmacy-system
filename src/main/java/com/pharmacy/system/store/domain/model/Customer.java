@@ -26,6 +26,10 @@ public class Customer extends User {
     this.email = email;
   }
 
+  public Customer() {
+    super();
+  }
+
   public Long getID() {
     return ID;
   }

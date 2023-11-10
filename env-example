@@ -1,0 +1,12 @@
+# PostgreSQL Configuration
+POSTGRES_DB=pharmacydb
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=admin1234
+
+# Database Configuration
+SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/pharmacydb?createDatabaseIfNotExist=true
+SPRING_DATASOURCE_USERNAME=postgres
+SPRING_DATASOURCE_PASSWORD=admin1234
+
+# Hibernate ddl auto (create, update, validate)
+SPRING_JPA_HIBERNATE_DDL_AUTO=update
