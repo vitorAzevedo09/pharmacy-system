@@ -7,7 +7,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-      - "5005:5005"
     volumes:
       - ./:/app
     command: ["mvn", "spring-boot:run"]
@@ -15,7 +14,6 @@ services:
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT}
       SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
   db:
     image: postgres:latest
