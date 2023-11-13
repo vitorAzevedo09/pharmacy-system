@@ -1,5 +1,6 @@
 package com.pharmacy.system.store.domain.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,9 +15,13 @@ public class Customer extends User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long ID;
+  @Column(name = "id")
+  private Long id;
+  @Column(name = "first_name")
   private String firstName;
+  @Column(name = "last_name")
   private String lastName;
+  @Column(name = "email")
   private String email;
 
   public Customer(String username, String password, String firstName, String lastName, String email) {
@@ -30,12 +35,12 @@ public class Customer extends User {
     super();
   }
 
-  public Long getID() {
-    return ID;
+  public Long getId() {
+    return id;
   }
 
-  public void setID(Long iD) {
-    ID = iD;
+  public void setId(Long iD) {
+    id = iD;
   }
 
   public String getFirstName() {

@@ -18,7 +18,7 @@ public class Product {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private Long ID;
+  private Long id;
 
   @Column(name = "name")
   private String name;
@@ -43,7 +43,7 @@ public class Product {
   }
 
   private Product(Builder builder) {
-    this.ID = builder.ID;
+    this.id = builder.id;
     this.name = builder.name;
     this.manufacturer = builder.manufacturer;
     this.description = builder.description;
@@ -54,7 +54,7 @@ public class Product {
 
   public static class Builder {
 
-    private Long ID;
+    private Long id;
     private String name;
     private String manufacturer;
     private String description;
@@ -63,7 +63,7 @@ public class Product {
     private Date expirationDate;
 
     public Builder id(Long id) {
-      this.ID = id;
+      this.id = id;
       return this;
     }
 
@@ -107,12 +107,12 @@ public class Product {
     return new Builder();
   }
 
-  public void setID(Long id) {
-    this.ID = id;
+  public void setId(Long id) {
+    this.id = id;
   }
 
-  public Long getID() {
-    return ID;
+  public Long getId() {
+    return id;
   }
 
   public String getName() {
@@ -140,8 +140,8 @@ public class Product {
   }
 
   public void copyFrom(Product another) {
-    if (another.getID() != null) {
-      this.ID = another.getID();
+    if (another.getId() != null) {
+      this.id = another.getId();
     }
     if (another.getName() != null) {
       this.name = another.getName();

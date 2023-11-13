@@ -39,7 +39,7 @@ public class ProductService {
     if (!productRepository.existsById(id)) {
       throw new ProductNotFoundException(id);
     }
-    newProduct.setID(id);
+    newProduct.setId(id);
     return productRepository.save(newProduct);
   }
 

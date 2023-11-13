@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.pharmacy.system.store.domain.exception.OrderNotFoundException;
 import com.pharmacy.system.store.domain.model.Order;
-import com.pharmacy.system.store.domain.model.OrderItem;
 import com.pharmacy.system.store.domain.repository.OrderItemRepository;
 import com.pharmacy.system.store.domain.repository.OrderRepository;
 
@@ -36,10 +35,15 @@ public class OrderService {
 
   @Transactional
   public Order create(final Order order) {
-    for (OrderItem orderItem : order.getItems()) {
-      orderItem.setOrder(order);
-      orderItemRepository.save(orderItem);
-    }
+    order.getItems()
+        .forEach(orderItem -> {
+          orderItem.setOrder(order);
+          orderItem.setPricePerUnit(orderItem.getProduct()
+              .getPrice());
+          orderItemRepository.save(orderItem);
+        });
+    order.calcTotalValue();
+    order.updateStatusToCreated();
     return orderRepository.save(order);
   }
 
@@ -48,15 +52,8 @@ public class OrderService {
     if (!orderRepository.existsById(id)) {
       throw new OrderNotFoundException(id);
     }
-    order.setID(id);
+    order.setId(id);
     return orderRepository.save(order);
-  }
-
-  @Transactional
-  public Order partialUpdate(final Long id, final Order order) {
-    Order orderDB = findOrFail(id);
-    orderDB.copyFrom(order);
-    return orderRepository.save(orderDB);
   }
 
   @Transactional

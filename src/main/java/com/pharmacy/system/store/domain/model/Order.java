@@ -8,6 +8,8 @@ import java.time.OffsetDateTime;
  */
 
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.pharmacy.system.store.domain.exception.OrderFlowException;
 import com.pharmacy.system.store.domain.model.enumerate.OrderStatus;
@@ -30,39 +32,36 @@ public class Order {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private Long ID;
+  private Long id;
 
   @ManyToOne
   @JoinColumn(name = "customer_id")
   private Customer customer;
 
-  @Column(name = "order_date")
-  private OffsetDateTime orderDate;
-
-  @Column(name = "TotalAmount")
+  @Column(name = "total_amount")
   private BigDecimal totalAmount;
 
   @Enumerated(EnumType.STRING)
+  @Column(name = "status")
   private OrderStatus status = OrderStatus.CREATED;
 
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
   private Set<OrderItem> items;
 
-  private OffsetDateTime confirmationDate;
-  private OffsetDateTime cancellationDate;
-  private OffsetDateTime deliveryDate;
+  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+  private List<OrderStatusHistory> statusHistory;
 
-  public void setID(Long orderID) {
-    this.ID = orderID;
+  public void setId(Long orderID) {
+    this.id = orderID;
   }
 
-  public void copyFrom(Order order) {
-    if (order.getCustomer() != null)
-      this.customer = order.customer;
-    if (order.getOrderDate() != null)
-      this.orderDate = order.getOrderDate();
-    if (order.getTotalAmount() != null)
-      this.totalAmount = order.getTotalAmount();
+  public OffsetDateTime getTimeCreated() {
+    return this.statusHistory.stream()
+        .filter(status -> status.getStatus()
+            .equals(OrderStatus.CREATED))
+        .findFirst()
+        .orElse(null)
+        .getChangeDate();
   }
 
   public void calcTotalValue() {
@@ -71,48 +70,68 @@ public class Order {
         .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 
-  public void confirm() {
-    if (getStatus() != OrderStatus.CREATED) {
-      throw new OrderFlowException(getStatus(), OrderStatus.CONFIRMED);
+  public void createOrderHistory() {
+    if (getStatus() != null || !getStatusHistory().isEmpty()) {
+      throw new OrderFlowException(getStatus(), OrderStatus.CREATED);
     }
-    setStatus(OrderStatus.CONFIRMED);
-    setConfirmationDate(OffsetDateTime.now());
+    this.statusHistory = new ArrayList<>();
   }
 
-  public void delivery() {
-    if (getStatus() != OrderStatus.CREATED) {
-      throw new OrderFlowException(getStatus(), OrderStatus.CONFIRMED);
+  private void updateOrderStatus(OrderStatus newStatus) {
+    if (this.statusHistory == null) {
+      this.statusHistory = new ArrayList<>();
     }
-    setStatus(OrderStatus.CONFIRMED);
-    setConfirmationDate(OffsetDateTime.now());
+
+    OrderStatusHistory statusHistoryEntry = new OrderStatusHistory();
+    statusHistoryEntry.setOrder(this);
+    statusHistoryEntry.setStatus(newStatus);
+    statusHistoryEntry.setChangeDate(OffsetDateTime.now());
+
+    this.statusHistory.add(statusHistoryEntry);
+    this.status = newStatus; // Update current status
   }
 
-  public void setStatus(OrderStatus status) {
-    this.status = status;
+  public void updateStatusToCreated() {
+    if (getStatus() != OrderStatus.CREATED) {
+      throw new OrderFlowException(getStatus(), OrderStatus.CREATED);
+    }
+    updateOrderStatus(OrderStatus.CREATED);
   }
 
-  public void setConfirmationDate(OffsetDateTime confirmationDate) {
-    this.confirmationDate = confirmationDate;
+  public void updateStatusToProcessing() {
+    if (getStatus() != OrderStatus.CREATED) {
+      throw new OrderFlowException(getStatus(), OrderStatus.PROCESSING);
+    }
+    updateOrderStatus(OrderStatus.PROCESSING);
   }
 
-  public void setCancellationDate(OffsetDateTime cancellationDate) {
-    this.cancellationDate = cancellationDate;
+  public void updateStatusToShipped() {
+    if (getStatus() != OrderStatus.PROCESSING) {
+      throw new OrderFlowException(getStatus(), OrderStatus.SHIPPED);
+    }
+    updateOrderStatus(OrderStatus.SHIPPED);
   }
 
-  public void setDeliveryDate(OffsetDateTime deliveryDate) {
-    this.deliveryDate = deliveryDate;
+  public void updateStatusToDelivered() {
+    if (getStatus() != OrderStatus.SHIPPED) {
+      throw new OrderFlowException(getStatus(), OrderStatus.DELIVERED);
+    }
+    updateOrderStatus(OrderStatus.DELIVERED);
   }
 
-  public Long getID() {
-    return ID;
+  public void updateStatusToCancelled() {
+    if (getStatus() == OrderStatus.SHIPPED) {
+      throw new OrderFlowException(getStatus(), OrderStatus.CANCELED);
+    }
+    updateOrderStatus(OrderStatus.CANCELED);
+  }
+
+  public Long getId() {
+    return id;
   }
 
   public Customer getCustomer() {
     return customer;
-  }
-
-  public OffsetDateTime getOrderDate() {
-    return orderDate;
   }
 
   public BigDecimal getTotalAmount() {
@@ -127,24 +146,8 @@ public class Order {
     return status;
   }
 
-  public OffsetDateTime getConfirmationDate() {
-    return confirmationDate;
-  }
-
-  public OffsetDateTime getCancellationDate() {
-    return cancellationDate;
-  }
-
-  public OffsetDateTime getDeliveryDate() {
-    return deliveryDate;
-  }
-
   public void setCustomer(Customer customer) {
     this.customer = customer;
-  }
-
-  public void setOrderDate(OffsetDateTime orderDate) {
-    this.orderDate = orderDate;
   }
 
   public void setTotalAmount(BigDecimal totalAmount) {
@@ -153,6 +156,10 @@ public class Order {
 
   public void setItems(Set<OrderItem> items) {
     this.items = items;
+  }
+
+  public List<OrderStatusHistory> getStatusHistory() {
+    return statusHistory;
   }
 
 }

@@ -21,25 +21,25 @@ public class OrderAssembler {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CustomerAssembler customerAssembler;
+
     public OrderWithIdDTO toOutput(Order entity) {
         return new OrderWithIdDTO(
-                entity.getID(),
+                entity.getId(),
                 entity.getCustomer(),
-                entity.getOrderDate(),
+                entity.getTimeCreated(),
                 entity.getTotalAmount(),
                 entity.getStatus(),
                 entity.getItems()
                         .stream()
                         .map(oi -> toOutput(oi))
-                        .collect(Collectors.toSet()),
-                entity.getConfirmationDate(),
-                entity.getDeliveryDate(),
-                entity.getCancellationDate());
+                        .collect(Collectors.toSet()));
     }
 
     public OrderItemWithIdDTO toOutput(OrderItem entity) {
         return new OrderItemWithIdDTO(
-                entity.getOrderItemID(),
+                entity.getId(),
                 entity.getQuantity(),
                 entity.getPricePerUnit());
     }
@@ -47,14 +47,14 @@ public class OrderAssembler {
     public OrderItem toEntity(OrderItemWithIdDTO dto) {
         OrderItem entity = new OrderItem();
         entity.setQuantity(dto.quantity());
-        entity.setOrderItemID(dto.orderItemID());
+        entity.setId(dto.orderItemID());
         entity.setPricePerUnit(dto.pricePerUnit());
         return entity;
     }
 
     public Order toEntity(OrderDTO dto) {
         Order entity = new Order();
-        entity.setOrderDate(dto.orderDateTime());
+        entity.setCustomer(customerAssembler.toEntity(dto.customer()));
         entity.setItems(dto.items()
                 .stream()
                 .map(oi -> toEntity(oi))
@@ -64,27 +64,21 @@ public class OrderAssembler {
 
     public Order toEntity(OrderWithIdDTO dto) {
         Order entity = new Order();
-        entity.setID(dto.ID());
+        entity.setId(dto.ID());
         entity.setCustomer(dto.customer());
-        entity.setOrderDate(dto.orderDate());
         entity.setTotalAmount(dto.totalAmount());
-        entity.setStatus(dto.status());
         entity.setItems(dto.items()
                 .stream()
                 .map(oi -> toEntity(oi))
                 .collect(Collectors.toSet()));
-        entity.setConfirmationDate(dto.confirmationDate());
-        entity.setCancellationDate(dto.cancellationDate());
-        entity.setDeliveryDate(dto.deliveryDate());
         return entity;
     }
 
     public OrderItem toEntity(OrderItemDTO dto) {
         OrderItem entity = new OrderItem();
-        System.out.println(dto.product_id());
-        entity.setProduct(productService.findOrFail(dto.product_id()));
+        entity.setProduct(productService.findOrFail(dto.product()
+                .ID()));
         entity.setQuantity(dto.quantity());
-        entity.setPricePerUnit(dto.price_unit());
         return entity;
     }
 

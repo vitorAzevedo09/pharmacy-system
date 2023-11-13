@@ -2,13 +2,17 @@
 /app/src/main/java/com/pharmacy/system/store/domain/model/Product.java
 /app/src/main/java/com/pharmacy/system/store/domain/model/Customer.java
 /app/src/main/java/com/pharmacy/system/store/api/dto/OrderItemDTO.java
+/app/src/main/java/com/pharmacy/system/store/api/dto/CustomerWithIdDTO.java
 /app/src/main/java/com/pharmacy/system/store/domain/model/enumerate/OrderStatus.java
+/app/src/main/java/com/pharmacy/system/store/domain/model/OrderStatusHistory.java
 /app/src/main/java/com/pharmacy/system/store/domain/exception/OrderNotFoundException.java
 /app/src/main/java/com/pharmacy/system/store/domain/model/User.java
+/app/src/main/java/com/pharmacy/system/store/api/assembler/CustomerAssembler.java
 /app/src/main/java/com/pharmacy/system/store/api/dto/ProductDTO.java
 /app/src/main/java/com/pharmacy/system/store/domain/service/OrderService.java
 /app/src/main/java/com/pharmacy/system/store/domain/exception/ResourceNotFoundException.java
 /app/src/main/java/com/pharmacy/system/store/api/assembler/ProductAssembler.java
+/app/src/main/java/com/pharmacy/system/store/domain/repository/CustomerRepository.java
 /app/src/main/java/com/pharmacy/system/store/domain/model/Order.java
 /app/src/main/java/com/pharmacy/system/store/api/assembler/OrderAssembler.java
 /app/src/main/java/com/pharmacy/system/store/domain/repository/OrderRepository.java
@@ -23,6 +27,8 @@
 /app/src/main/java/com/pharmacy/system/store/domain/repository/ProductRepository.java
 /app/src/main/java/com/pharmacy/system/store/domain/exception/OrderItemNotFoundException.java
 /app/src/main/java/com/pharmacy/system/store/domain/exception/ProductNotFoundException.java
+/app/src/main/java/com/pharmacy/system/store/domain/exception/CustomerNotFound.java
 /app/src/main/java/com/pharmacy/system/store/PharmacySystemStoreApplication.java
 /app/src/main/java/com/pharmacy/system/store/api/controller/ProductController.java
 /app/src/main/java/com/pharmacy/system/store/domain/repository/OrderItemRepository.java
+/app/src/main/java/com/pharmacy/system/store/domain/service/CustomerService.java
