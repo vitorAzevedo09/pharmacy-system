@@ -10,3 +10,7 @@ SPRING_DATASOURCE_PASSWORD=admin1234
 
 # Hibernate ddl auto (create, update, validate)
 SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+#Firebase config
+FIREBASE_STORAGE_BUCKET=gs://elzapharmacy.appspot.com/
+FIREBASE_CONFIG_PATH=

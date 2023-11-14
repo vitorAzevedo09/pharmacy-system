@@ -1,11 +1,15 @@
 package com.pharmacy.system.store.domain.service;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.pharmacy.system.store.domain.exception.ProductNotFoundException;
+import com.pharmacy.system.store.domain.model.Image;
 import com.pharmacy.system.store.domain.model.Product;
 import com.pharmacy.system.store.domain.repository.ProductRepository;
 
@@ -19,6 +23,9 @@ public class ProductService {
 
   @Autowired
   private ProductRepository productRepository;
+
+  @Autowired
+  private ImageService imageService;
 
   public Page<Product> findAll(Pageable pageable) {
     return productRepository.findAll(pageable);
@@ -54,6 +61,20 @@ public class ProductService {
   public void delete(final Long productID) {
     Product entity = findOrFail(productID);
     productRepository.delete(entity);
+  }
+
+  @Transactional
+  public Image uploadProductImage(
+      final Long productId,
+      MultipartFile file,
+      String image_description) throws IOException {
+    Product product = findOrFail(productId);
+    Image img = imageService.create(
+        new Image(
+            imageService.uploadImage(file),
+            image_description,
+            product));
+    return img;
   }
 
 }

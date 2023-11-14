@@ -1,20 +1,24 @@
 package com.pharmacy.system.store.domain.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
 public class Product {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
@@ -33,34 +37,32 @@ public class Product {
   private BigDecimal price;
 
   @Column(name = "quantity_in_stock")
-  private Integer quantityInStock;
+  private int quantityInStock;
 
   @Column(name = "expiration_date")
   @Temporal(TemporalType.DATE)
   private Date expirationDate;
 
-  public Product() {
-  }
-
-  private Product(Builder builder) {
-    this.id = builder.id;
-    this.name = builder.name;
-    this.manufacturer = builder.manufacturer;
-    this.description = builder.description;
-    this.price = builder.price;
-    this.quantityInStock = builder.quantityInStock;
-    this.expirationDate = builder.expirationDate;
-  }
+  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Image> images;
 
   public static class Builder {
 
     private Long id;
+
     private String name;
+
     private String manufacturer;
+
     private String description;
+
     private BigDecimal price;
-    private int quantityInStock;
+
+    private Integer quantityInStock;
+
     private Date expirationDate;
+
+    private List<Image> images;
 
     public Builder id(Long id) {
       this.id = id;
@@ -105,6 +107,20 @@ public class Product {
 
   public static Builder builder() {
     return new Builder();
+  }
+
+  public Product() {
+  }
+
+  private Product(Builder builder) {
+    this.id = builder.id;
+    this.name = builder.name;
+    this.manufacturer = builder.manufacturer;
+    this.description = builder.description;
+    this.price = builder.price;
+    this.quantityInStock = builder.quantityInStock;
+    this.expirationDate = builder.expirationDate;
+    this.images = builder.images;
   }
 
   public void setId(Long id) {
@@ -161,6 +177,10 @@ public class Product {
     if (another.getExpirationDate() != null) {
       this.expirationDate = another.getExpirationDate();
     }
+  }
+
+  public List<Image> getImages() {
+    return images;
   }
 
 }

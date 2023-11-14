@@ -1,4 +1,4 @@
-TRUNCATE TABLE order_items,order_status_history, products, orders, users, customers RESTART IDENTITY;
+TRUNCATE TABLE order_items,order_status_history, products, orders, users, customers, images RESTART IDENTITY;
 
 -- Inserting medicine products
 INSERT INTO products (name, manufacturer, description, price, quantity_in_stock, expiration_date)
