@@ -1,5 +1,7 @@
 package com.pharmacy.system.store.api.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.pharmacy.system.store.api.assembler.ImageAssembler;
 import com.pharmacy.system.store.api.dto.ImageDTO;
@@ -44,16 +45,12 @@ public class ProductImageController {
   @PostMapping
   public ResponseEntity<ImageWithIdDTO> uploadProductImage(
       @PathVariable final Long productId,
-      ImageDTO image) {
-    try {
-      Image img = productService.uploadProductImage(
-          productId,
-          image.file(),
-          image.description());
-      return ResponseEntity.ok(new ImageWithIdDTO(img.getId(), img.getImageUrl(), img.getDescription()));
-    } catch (Exception ex) {
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
-    }
+      ImageDTO image) throws IOException {
+    Image img = productService.uploadProductImage(
+        productId,
+        image.file(),
+        image.description());
+    return ResponseEntity.ok(new ImageWithIdDTO(img.getId(), img.getImageUrl(), img.getDescription()));
   }
 
 }

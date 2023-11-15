@@ -28,7 +28,7 @@ public class ImageService {
   @Autowired
   private ImageRepository imageRepository;
 
-  @Value("${firebase.config.path}")
+  @Value("${firebase.storage.bucket}")
   private String firebaseStorageBucket;
 
   public Page<Image> findAll(Pageable pageable) {
@@ -37,7 +37,9 @@ public class ImageService {
 
   public String uploadImage(MultipartFile file) throws IOException {
     BlobId blobId = BlobId.of(firebaseStorageBucket, generateObjectName(file.getOriginalFilename()));
-    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+    BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+        .setContentType(file.getContentType())
+        .build();
 
     storage.create(blobInfo, file.getBytes());
 
