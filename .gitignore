@@ -62,3 +62,7 @@ local.properties
 # End of https://www.gitignore.io/api/eclipse
 .env
 key.json
+.classpath
+.project
+.settings/
+target/
