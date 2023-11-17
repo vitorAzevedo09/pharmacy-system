@@ -8,10 +8,10 @@ VALUES
     ('Allergy Medication', 'Wellness Pharma', 'Relieves allergy symptoms such as sneezing and itching', 14.99, 75, '2023-12-31');
 
 -- Inserting users
-INSERT INTO "users" (username, password, dtype)
+INSERT INTO users (username, email, password, dtype)
 VALUES
-    ('john_doe', 'password123', 'customer'),
-    ('jane_smith', 'securePwd456', 'user');
+    ('john_doe','fulano@email.com', 'password123', 'customer'),
+    ('jane_smith','sicrano@email.com', 'securePwd456', 'user');
 
 -- Inserting customers
 INSERT INTO customers (first_name, last_name, email)

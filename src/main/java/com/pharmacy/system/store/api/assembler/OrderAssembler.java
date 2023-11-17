@@ -21,13 +21,10 @@ public class OrderAssembler {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private CustomerAssembler customerAssembler;
-
     public OrderWithIdDTO toOutput(Order entity) {
         return new OrderWithIdDTO(
                 entity.getId(),
-                entity.getCustomer(),
+                entity.getCustomer().getId(),
                 entity.getTimeCreated(),
                 entity.getTotalAmount(),
                 entity.getStatus(),

@@ -36,7 +36,7 @@ public class Order {
 
   @ManyToOne
   @JoinColumn(name = "customer_id")
-  private Customer customer;
+  private User customer;
 
   @Column(name = "total_amount")
   private BigDecimal totalAmount;
@@ -130,10 +130,6 @@ public class Order {
     return id;
   }
 
-  public Customer getCustomer() {
-    return customer;
-  }
-
   public BigDecimal getTotalAmount() {
     return totalAmount;
   }
@@ -146,10 +142,6 @@ public class Order {
     return status;
   }
 
-  public void setCustomer(Customer customer) {
-    this.customer = customer;
-  }
-
   public void setTotalAmount(BigDecimal totalAmount) {
     this.totalAmount = totalAmount;
   }
@@ -160,6 +152,10 @@ public class Order {
 
   public List<OrderStatusHistory> getStatusHistory() {
     return statusHistory;
+  }
+
+  public User getCustomer() {
+    return customer;
   }
 
 }

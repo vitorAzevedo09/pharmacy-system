@@ -6,6 +6,6 @@ import java.util.Set;
  * OrderOutput
  */
 public record OrderDTO(
-                                CustomerWithIdDTO customer,
-                                Set<OrderItemDTO> items) {
+                                                                UserOnlyIdDTO customer,
+                                                                Set<OrderItemDTO> items) {
 }
