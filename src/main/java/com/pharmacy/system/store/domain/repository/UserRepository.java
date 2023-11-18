@@ -12,6 +12,6 @@ import com.pharmacy.system.store.domain.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-  UserDetails findByUsername(String username);
+  public UserDetails findByUsername(String username);
 
 }

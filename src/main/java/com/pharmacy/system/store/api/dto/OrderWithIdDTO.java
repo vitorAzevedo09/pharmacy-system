@@ -10,10 +10,10 @@ import com.pharmacy.system.store.domain.model.enumerate.OrderStatus;
  * OrderWithIdDTO
  */
 public record OrderWithIdDTO(
-                                Long ID,
-                                UserOnlyIdDTO customer,
-                                OffsetDateTime order_date,
-                                BigDecimal totalAmount,
-                                OrderStatus status,
-                                Set<OrderItemWithIdDTO> items) {
+                                                                                                                                Long ID,
+                                                                                                                                CustomerOnlyIdDTO customer,
+                                                                                                                                OffsetDateTime order_date,
+                                                                                                                                BigDecimal totalAmount,
+                                                                                                                                OrderStatus status,
+                                                                                                                                Set<OrderItemWithIdDTO> items) {
 }

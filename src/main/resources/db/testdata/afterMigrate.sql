@@ -1,4 +1,16 @@
-TRUNCATE TABLE order_items,order_status_history, products, orders, users, customers, images RESTART IDENTITY;
+TRUNCATE TABLE 
+order_items,
+order_status_history,
+products,
+orders,
+users,
+customers,
+images,
+users_roles,
+roles,
+roles_privileges,
+privileges
+RESTART IDENTITY;
 
 -- Inserting medicine products
 INSERT INTO products (name, manufacturer, description, price, quantity_in_stock, expiration_date)
@@ -8,16 +20,17 @@ VALUES
     ('Allergy Medication', 'Wellness Pharma', 'Relieves allergy symptoms such as sneezing and itching', 14.99, 75, '2023-12-31');
 
 -- Inserting users
-INSERT INTO users (username, email, password, dtype)
+INSERT INTO users (username, first_name,last_name, email, password, dtype)
 VALUES
-    ('john_doe','fulano@email.com', 'password123', 'customer'),
-    ('jane_smith','sicrano@email.com', 'securePwd456', 'user');
+    ('john_doe','John', 'Doe','fulano@email.com', 'password123', 'customer'),
+    ('jane_smith','Jane','Smith','sicrano@email.com', 'securePwd456', 'user'),
+    ('beatriz_oliveira','Beatriz Cristine','Oliveira dos Santos','beatrizgostosa@email.com', 'senhazinha', 'customer');
 
 -- Inserting customers
-INSERT INTO customers (first_name, last_name, email)
+INSERT INTO customers (user_id,company)
 VALUES
-    ('John', 'Doe', 'john.doe@example.com'),
-    ('Jane', 'Smith', 'jane.smith@example.com');
+    (1,'Comercial Buriti'),
+    (3,'Coca Cola');
 
 -- Inserting an order
 INSERT INTO orders (customer_id, total_amount, status)

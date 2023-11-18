@@ -25,8 +25,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.Builder;
+import lombok.Builder.Default;
 
 @Entity(name = "orders")
+@Builder
 public class Order {
 
   @Id
@@ -36,11 +39,12 @@ public class Order {
 
   @ManyToOne
   @JoinColumn(name = "customer_id")
-  private User customer;
+  private Customer customer;
 
   @Column(name = "total_amount")
   private BigDecimal totalAmount;
 
+  @Default
   @Enumerated(EnumType.STRING)
   @Column(name = "status")
   private OrderStatus status = OrderStatus.CREATED;
@@ -154,7 +158,7 @@ public class Order {
     return statusHistory;
   }
 
-  public User getCustomer() {
+  public Customer getCustomer() {
     return customer;
   }
 

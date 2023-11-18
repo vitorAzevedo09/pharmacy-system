@@ -9,6 +9,7 @@ import com.pharmacy.system.store.api.dto.OrderWithIdDTO;
 import com.pharmacy.system.store.api.dto.OrderDTO;
 import com.pharmacy.system.store.api.dto.OrderItemDTO;
 import com.pharmacy.system.store.api.dto.OrderItemWithIdDTO;
+import com.pharmacy.system.store.domain.model.Customer;
 import com.pharmacy.system.store.domain.model.Order;
 import com.pharmacy.system.store.domain.model.OrderItem;
 import com.pharmacy.system.store.domain.service.ProductService;
@@ -21,10 +22,13 @@ public class OrderAssembler {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CustomerAssembler customerAssembler;
+
     public OrderWithIdDTO toOutput(Order entity) {
         return new OrderWithIdDTO(
                 entity.getId(),
-                entity.getCustomer().getId(),
+                customerAssembler.toOutput(entity.getCustomer()),
                 entity.getTimeCreated(),
                 entity.getTotalAmount(),
                 entity.getStatus(),
@@ -50,24 +54,14 @@ public class OrderAssembler {
     }
 
     public Order toEntity(OrderDTO dto) {
-        Order entity = new Order();
-        entity.setCustomer(customerAssembler.toEntity(dto.customer()));
-        entity.setItems(dto.items()
-                .stream()
-                .map(oi -> toEntity(oi))
-                .collect(Collectors.toSet()));
-        return entity;
-    }
-
-    public Order toEntity(OrderWithIdDTO dto) {
-        Order entity = new Order();
-        entity.setId(dto.ID());
-        entity.setCustomer(dto.customer());
-        entity.setTotalAmount(dto.totalAmount());
-        entity.setItems(dto.items()
-                .stream()
-                .map(oi -> toEntity(oi))
-                .collect(Collectors.toSet()));
+        Customer customer = customerAssembler.toEntity(dto.customer());
+        Order entity = Order.builder()
+                .customer(customer)
+                .items(dto.items()
+                        .stream()
+                        .map(oi -> toEntity(oi))
+                        .collect(Collectors.toSet()))
+                .build();
         return entity;
     }
 

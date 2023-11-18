@@ -16,11 +16,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * User
  */
 @Entity(name = "users")
+@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
 
   @Id
@@ -62,20 +70,6 @@ public class User implements UserDetails {
   // @formatter:on
   private List<Role> roles;
 
-  private List<String> getPrivileges() {
-    List<String> privileges = new ArrayList<>();
-    for (Role role : this.roles) {
-      for (Privilege privilege : role.getPrivileges()) {
-        privileges.add(privilege.getName());
-      }
-    }
-    return privileges;
-  }
-
-  private List<SimpleGrantedAuthority> getGrantedAuthorities(List<String> privileges) {
-    return privileges.stream().map(privilege -> new SimpleGrantedAuthority(privilege)).toList();
-  }
-
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return getGrantedAuthorities(getPrivileges());
@@ -99,40 +93,18 @@ public class User implements UserDetails {
     return true;
   }
 
-  public String getUsername() {
-    return username;
+  private List<String> getPrivileges() {
+    List<String> privileges = new ArrayList<>();
+    for (Role role : this.roles) {
+      for (Privilege privilege : role.getPrivileges()) {
+        privileges.add(privilege.getName());
+      }
+    }
+    return privileges;
   }
 
-  public Long getId() {
-    return id;
-  }
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public boolean isEnabled() {
-    return enabled;
-  }
-
-  public boolean isTokenExpired() {
-    return tokenExpired;
-  }
-
-  public Collection<Role> getRoles() {
-    return roles;
+  private List<SimpleGrantedAuthority> getGrantedAuthorities(List<String> privileges) {
+    return privileges.stream().map(privilege -> new SimpleGrantedAuthority(privilege)).toList();
   }
 
 }
