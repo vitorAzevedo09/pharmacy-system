@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Builder.Default;
 
 /**
  * User
@@ -51,11 +52,13 @@ public class User implements UserDetails {
   @Column(name = "password")
   private String password;
 
+  @Default
   @Column(name = "enabled")
-  private boolean enabled;
+  private boolean enabled = true;
 
+  @Default
   @Column(name = "token_expired")
-  private boolean tokenExpired;
+  private boolean tokenExpired = false;
 
   @ManyToMany
   // @formatter:off

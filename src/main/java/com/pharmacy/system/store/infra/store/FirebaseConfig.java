@@ -1,4 +1,4 @@
-package com.pharmacy.system.store.config;
+package com.pharmacy.system.store.infra.store;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,15 +27,11 @@ public class FirebaseConfig {
   @Value("${firebase.config.path}")
   private String firebaseConfigPath;
 
-  @Value("${firebase.config.projectid}")
-  private String projectid;
-
   @PostConstruct
   public void init() throws IOException {
     FileInputStream serviceAccount = new FileInputStream(firebaseConfigPath);
 
     FirebaseOptions options = FirebaseOptions.builder()
-        .setProjectId(projectid)
         .setCredentials(GoogleCredentials.fromStream(serviceAccount))
         .setStorageBucket(firebaseStorageBucket)
         .build();

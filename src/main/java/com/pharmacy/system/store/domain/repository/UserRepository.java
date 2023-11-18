@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
+import com.google.common.base.Optional;
 import com.pharmacy.system.store.domain.model.User;
 
 /**
@@ -13,5 +14,7 @@ import com.pharmacy.system.store.domain.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
   public UserDetails findByUsername(String username);
+
+  public Optional<User> findByEmail(String email);
 
 }

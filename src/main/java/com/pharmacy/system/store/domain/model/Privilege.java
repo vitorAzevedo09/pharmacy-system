@@ -11,11 +11,11 @@ import jakarta.persistence.ManyToMany;
 /**
  * Privilege
  */
-@Entity
+@Entity(name = "privilege")
 public class Privilege {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private String name;

@@ -1,16 +1,16 @@
 CREATE TABLE roles (
-  id serial PRIMARY KEY,
+  id BIGSERIAL PRIMARY KEY,
   name VARCHAR(255) UNIQUE NOT NULL
 );
 
-CREATE TABLE privileges (
-  id serial PRIMARY KEY,
+CREATE TABLE privilege (
+  id BIGSERIAL PRIMARY KEY,
   name VARCHAR(255) UNIQUE NOT NULL
 );
 
 CREATE TABLE roles_privileges (
-  role_id INTEGER NOT NULL REFERENCES roles(id),
-  privilege_id INTEGER NOT NULL REFERENCES privileges(id),
+  role_id BIGINT NOT NULL REFERENCES roles(id),
+  privilege_id BIGINT NOT NULL REFERENCES privilege(id),
   PRIMARY KEY (role_id, privilege_id)
 );
 

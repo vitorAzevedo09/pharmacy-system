@@ -9,7 +9,7 @@ images,
 users_roles,
 roles,
 roles_privileges,
-privileges
+privilege
 RESTART IDENTITY;
 
 -- Inserting medicine products
@@ -51,3 +51,28 @@ INSERT INTO order_status_history (order_id, status, change_date) VALUES
 (1, 'CREATED', '2023-01-01T12:00:00Z'::TIMESTAMPTZ),
 (1, 'PROCESSING', '2023-01-02T10:00:00Z'::TIMESTAMPTZ),
 (1, 'SHIPPED', '2023-01-03T14:30:00Z'::TIMESTAMPTZ);
+
+-- Insert Privileges
+INSERT INTO privilege (name)
+VALUES
+  ('READ_PRIVILEGE'),
+  ('WRITE_PRIVILEGE');
+
+INSERT INTO roles (name)
+VALUES
+  ('ROLE_ADMIN'),
+  ('ROLE_USER');
+
+INSERT INTO roles_privileges (role_id, privilege_id)
+VALUES
+  ((SELECT id FROM roles WHERE name =
+ 
+'ROLE_ADMIN'),
+   (SELECT id FROM privilege WHERE name = 'READ_PRIVILEGE')),
+  ((SELECT id FROM roles WHERE name = 'ROLE_ADMIN'),
+   (SELECT id FROM privilege WHERE name = 'WRITE_PRIVILEGE'));
+
+INSERT INTO roles_privileges (role_id, privilege_id)
+VALUES
+  ((SELECT id FROM roles WHERE name = 'ROLE_USER'),
+   (SELECT id FROM privilege WHERE name = 'READ_PRIVILEGE'));
