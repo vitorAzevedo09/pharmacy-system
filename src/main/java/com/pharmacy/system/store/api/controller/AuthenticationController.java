@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.pharmacy.system.store.api.assembler.AuthAssembler;
 import com.pharmacy.system.store.api.dto.AuthenticationDTO;
 import com.pharmacy.system.store.api.dto.AuthorizationResponseDTO;
 import com.pharmacy.system.store.api.dto.RegisterDTO;
@@ -38,6 +39,9 @@ public class AuthenticationController {
   @Autowired
   private TokenService tokenService;
 
+  @Autowired
+  private AuthAssembler authAssembler;
+
   @PostMapping("/login")
   public ResponseEntity<?> login(
       @RequestBody AuthenticationDTO data) {
@@ -45,9 +49,9 @@ public class AuthenticationController {
         data.password());
     System.out.println(authenticate);
     var authenticated = authenticationManager.authenticate(authenticate);
-    var token = tokenService.generateToken((User) authenticated.getPrincipal());
-    var output = new AuthorizationResponseDTO(token);
-    return ResponseEntity.ok(output);
+    User userAuthenticaded = (User) authenticated.getPrincipal();
+    var token = tokenService.generateToken(userAuthenticaded);
+    return ResponseEntity.ok(authAssembler.toAuthorizationResponseDTO(userAuthenticaded, token));
 
   }
 

@@ -32,7 +32,9 @@ public class SecurityConfig {
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
             .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
             .requestMatchers(HttpMethod.POST, "/products").hasRole("STAFF")
+            .requestMatchers(HttpMethod.POST, "/orders").hasRole("ADMIN")
             .anyRequest()
             .permitAll())
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
