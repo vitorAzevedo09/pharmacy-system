@@ -3,6 +3,7 @@ package com.pharmacy.system.store.domain.model;
 import java.util.Collection;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,10 +19,10 @@ public class Role {
   private Long id;
 
   private String name;
-  @ManyToMany(mappedBy = "roles")
+  @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
   private Collection<User> users;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER)
   // @formatter:off
   @JoinTable(
       name = "roles_privileges", 

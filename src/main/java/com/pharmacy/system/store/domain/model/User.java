@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,6 +19,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Builder.Default;
@@ -25,11 +27,12 @@ import lombok.Builder.Default;
 /**
  * User
  */
-@Entity(name = "users")
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name = "users")
+@EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
 
   @Id
@@ -60,7 +63,7 @@ public class User implements UserDetails {
   @Column(name = "token_expired")
   private boolean tokenExpired = false;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER)
   // @formatter:off
   @JoinTable(
     name = "users_roles",

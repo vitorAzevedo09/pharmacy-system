@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.pharmacy.system.store.domain.exception.ResourceNotFoundException;
@@ -18,7 +20,7 @@ import com.pharmacy.system.store.domain.repository.UserRepository;
  * UserService
  */
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
   @Autowired
   private UserRepository userRepository;
@@ -31,22 +33,19 @@ public class UserService {
         .orElseThrow(() -> new UserNotFoundException(userId));
   }
 
-  public boolean existUsernameOrEmail(User user) {
-    if (userRepository.findByUsername(user.getUsername()) != null
-        || !userRepository.findByEmail(user.getUsername()).isPresent()) {
-      return true;
-    }
-    return false;
-  }
-
   public User save(User user) {
-    if (existUsernameOrEmail(user)) {
-      throw new UserConflictException("Username or Email");
-    }
+    if (userRepository.existsByUsername(user.getUsername()))
+      throw new UserConflictException(
+          String.format("User with username %s already exists", user.getUsername()));
+
+    if (userRepository.existsByEmail(user.getEmail()))
+      throw new UserConflictException(
+          String.format("User with email %s already exists", user.getEmail()));
     return userRepository.save(user);
   }
 
-  public UserDetails findByUsername(final String username) {
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return userRepository.findByUsername(username);
   }
 

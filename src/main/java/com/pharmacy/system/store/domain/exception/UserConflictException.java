@@ -5,8 +5,8 @@ package com.pharmacy.system.store.domain.exception;
  */
 public class UserConflictException extends ResourceConflictException {
 
-  public UserConflictException(String field) {
-    super(String.format("%s field already exist", field));
+  public UserConflictException(String message) {
+    super(message);
   }
 
 }

@@ -5,5 +5,11 @@ import java.util.List;
 /**
  * RegisterDTO
  */
-public record RegisterDTO(String login, String password, List<Long> roles) {
+public record RegisterDTO(
+    String username,
+    String password,
+    String first_name,
+    String last_name,
+    String email,
+    List<Long> roles) {
 }
